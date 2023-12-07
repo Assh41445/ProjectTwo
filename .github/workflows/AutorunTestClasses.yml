@@ -46,6 +46,12 @@ jobs:
               with:
                   flags: Apex
 
+            #CodeCov      
+            - name: Upload coverage reports to Codecov
+              uses: codecov/codecov-action@v3
+              env:
+                CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
             # Housekeeping
             - name: 'Delete scratch org'  
               run: sfdx force:org:delete -p -u scratch-org

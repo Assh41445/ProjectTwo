@@ -8,8 +8,7 @@ on:
     branches: main
    # Jobs to be executed
 jobs:
-
-   pmd-run:
+    pmd-run:
         runs-on: ubuntu-latest
         steps:
         # Checkout the source code
@@ -27,7 +26,7 @@ jobs:
             # Run PMD scan
             - name: 'Run PMD scan'
               run: ~/pmd/bin/run.sh pmd -d force-app -R pmd/ruleset.xml -f text
-              
+
     scratch-org-test:
         runs-on: ubuntu-latest
         steps:

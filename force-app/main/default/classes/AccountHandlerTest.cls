@@ -9,6 +9,7 @@ public class AccountHandlerTest {
         
         Test.startTest();
         String result=AccountHandler.getAccount(acc.id);
+        system.assertEquals('Test', result);
         Test.stopTest();
     }
 }

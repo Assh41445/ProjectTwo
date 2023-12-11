@@ -1,4 +1,4 @@
-public class AccountHandler {
+public with sharing class AccountHandler {
     
     Public static String getAccount(Id AccountId)
     {

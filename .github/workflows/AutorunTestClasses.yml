@@ -55,12 +55,12 @@ jobs:
             - name: 'Generate the package.xml for delta files'
               run: |
                    mkdir delta
-                   sfdx sgd:source:delta --to Feature_Branch_0612 --from main --output "./delta" --ignore-whitespace -d -i .sgdignore
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD~1" --output "."
                    echo "--- package.xml generated with added and modified metadata ---"
                    cat delta/package/package.xml
 
         # Deploy changes from delta package xml
             - name: 'Deploy Delta components to Salesforce'
               run: |
-                   sfdx force:source:deploy -x delta/package/package.xml -c -l RunLocalTests -u devOrg
+                   sfdx force:source:deploy -x package/package.xml --postdestructivechanges destructiveChanges/destructiveChanges.xml
       

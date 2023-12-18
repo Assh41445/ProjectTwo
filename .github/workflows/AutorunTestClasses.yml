@@ -92,10 +92,20 @@ jobs:
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
 
+         # Install Delta plugin
+		        - name: Install the sfdx-git-delta plugin
+		          run: sfdx plugins:install sfdx-git-delta
+
         # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
               run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E6qm3bcSm3gu7SaB1dGbzuNKyv0qo5xeWrDY2WsLTxo2O9.E8y3SZ1ik5gl3yFxL1LQ4kd. --jwtkeyfile ./server.key --username abcd4145@example1.com --setdefaultdevhubusername --setdefaultusername -a devOrg
               
-            # Deploy source to Acc org
-            - name: 'Push source to  org'
-              run: sfdx force:source:deploy -u abcd4145@example1.com -p force-app/main/default
+        # Generate XMl file using delta
+		        - name: Generate the package.xml for delta files
+		          run: mkdir delta
+          		     sfdx sgd:source:delta --to "HEAD" --from "HEAD~1" --output "./delta" --ignore-whitespace -d -i .sgdignore
+			             cat delta/package/package.xml
+
+		    # Deploy changes from delta package xml
+		        - name: Deploy Delta components to Salesofrce
+		          run: sfdx force:source:deploy -x delta/package/package.xml -c -l RunLocalTests -u devOrg

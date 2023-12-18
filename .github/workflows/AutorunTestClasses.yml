@@ -74,3 +74,28 @@ jobs:
             # Housekeeping
             - name: 'Delete scratch org'  
               run: sfdx force:org:delete -p -u scratch-org
+
+
+    branch-to-org:
+        runs-on: ubuntu-latest 
+        steps:
+        # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v2
+
+        # Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                  mkdir ~/sfdx
+                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                  ~/sfdx/bin/sfdx version
+
+        # Authenticate dev hub
+            - name: 'Authenticate Dev Hub'
+              run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E6qm3bcSm3gu7SaB1dGbzuNKyv0qo5xeWrDY2WsLTxo2O9.E8y3SZ1ik5gl3yFxL1LQ4kd. --			jwtkeyfile ./server.key --username abcd4145@example1.com --setdefaultdevhubusername --setdefaultusername -a devOrg
+              
+            # Deploy source to Acc org
+            - name: 'Push source to  org'
+              run: sfdx force:source:deploy -u abcd4145@example1.com -p force-app/main/default

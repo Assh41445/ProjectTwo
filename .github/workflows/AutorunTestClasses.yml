@@ -5,7 +5,6 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   pull_request:
-    types: [closed]
     branches: main
    # Jobs to be executed
 jobs:
@@ -56,7 +55,7 @@ jobs:
             - name: 'Generate the package.xml for delta files'
               run: |
                    mkdir delta
-                   sfdx sgd:source:delta --to "HEAD" --from "HEAD~1" --output "./delta" -i .sgdignore
+                   sfdx sgd:source:delta --to "HEAD" --from "origin/main" --output "./delta" -i .sgdignore
                    echo "--- package.xml generated with added and modified metadata ---"
                    cat delta/package/package.xml
 

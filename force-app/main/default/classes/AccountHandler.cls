@@ -2,7 +2,7 @@ public with sharing class AccountHandler {
     
     Public static String getAccount(Id AccountId)
     {
-        System.debug('Test Comment nine');
+        System.debug('Test Comment ten');
         if(AccountId != null)
         {
             Account acc=[Select id,Name from Account where Id =: AccountId];

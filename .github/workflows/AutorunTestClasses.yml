@@ -62,5 +62,5 @@ jobs:
         # Deploy changes from delta package xml
             - name: 'Deploy Delta components to Salesforce'
               run: |
-                   sfdx force:source:deploy -x package/package.xml --postdestructivechanges destructiveChanges/destructiveChanges.xml
+                   sfdx force:source:deploy -x delta/package/package.xml --postdestructivechanges destructiveChanges/destructiveChanges.xml
       

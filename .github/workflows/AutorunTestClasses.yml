@@ -55,7 +55,7 @@ jobs:
             - name: 'Generate the package.xml for delta files'
               run: |
                    mkdir delta
-                   sfdx sgd:source:delta --to "HEAD" --from "origin/main" --output . -i .sgdignore
+                   sfdx sgd:source:delta --to "HEAD" --from "origin/main" --output "./delta" -i .sgdignore
                    echo "--- package.xml generated with added and modified metadata ---"
                    cat delta/package/package.xml
 

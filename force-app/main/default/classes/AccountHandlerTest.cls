@@ -3,7 +3,7 @@ public class AccountHandlerTest {
 
     @isTest
     public static void testMethodOne(){
-        //Test class 8766
+        //Test class 7687
         Account acc=new Account();
         acc.Name='Test';
         insert acc;

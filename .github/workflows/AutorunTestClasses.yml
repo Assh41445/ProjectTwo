@@ -68,5 +68,5 @@ jobs:
         # Deploy changes from delta package xml
             - name: 'Deploy Delta components to Salesforce'
               run: |
-                   sfdx force:source:deploy -x delta/package/package.xml
+                   sfdx force:source:deploy -x delta/package/package.xml --targetusername abcd4145@example1.com
       

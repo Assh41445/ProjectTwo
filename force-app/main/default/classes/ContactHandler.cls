@@ -2,7 +2,7 @@ public with sharing class ContactHandler {
 
     Public static String getContact(Id contactId)
     {
-        System.debug('Test Comment one two');
+        System.debug('Test Comment one 65765');
         if(contactId != null)
         {
             Contact contact=[Select id,LastName from Contact where Id =: contactId];

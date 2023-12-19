@@ -51,11 +51,17 @@ jobs:
             - name: 'Authenticate Dev Hub'
               run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E6qm3bcSm3gu7SaB1dGbzuNKyv0qo5xeWrDY2WsLTxo2O9.E8y3SZ1ik5gl3yFxL1LQ4kd. --jwtkeyfile ./server.key --username abcd4145@example1.com --setdefaultdevhubusername --setdefaultusername -a devOrg
 
+        # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
+
         # Generate XMl file using delta
             - name: 'Generate the package.xml for delta files'
               run: |
                    mkdir delta
-                   sfdx sgd:source:delta --to "HEAD" --from "origin/main" --output "./delta" -i .sgdignore
+                   sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output "./delta" -i .sgdignore
                    echo "--- package.xml generated with added and modified metadata ---"
                    cat delta/package/package.xml
 

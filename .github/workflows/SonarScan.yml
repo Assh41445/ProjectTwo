@@ -7,50 +7,52 @@ on:
       - main
 
 # Jobs to be executed
-jobs:
-  deploy-source:
-    runs-on: ubuntu-latest
+  jobs:
+    deploy-source:
+      runs-on: ubuntu-latest
 
-   steps:
-      # Checkout the source code
-      - name: "Checkout source code"
-        uses: actions/checkout@v2
-
-      
-     # Install Salesforce CLI
-            - name: 'Install Salesforce CLI'
-              run: |
-                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
-                  mkdir ~/sfdx
-                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
-                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
-                  ~/sfdx/bin/sfdx version
-
-	# Authenticate dev hub
-            - name: 'Authenticate Dev Hub'
-              run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E6qm3bcSm3gu7SaB1dGbzuNKyv0qo5xeWrDY2WsLTxo2O9.E8y3SZ1ik5gl3yFxL1LQ4kd. --jwtkeyfile ./server.key --username abcd4145@example1.com --setdefaultdevhubusername --setdefaultusername -a devOrg
-
-
-	# Get Apex test results
-      - name: "Run Apex tests"
-        run: "sfdx force:apex:test:run -c -r json -d ./tests/apex -u devOrg -w 120"
-
-sonar-scan:
-    needs: deploy-source
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      # Download the code coverage report
-      - name: "Download coverage result from previous job"
-        uses: actions/download-artifact@v2
-        with:
-          name: apex-code-coverage
-          path: tests/apex
-      # Use Sonar Cloud action with sonar-project.properties to scan project
-      - name: "Sonar Cloud scan"
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # Checkout the source code
+        - name: "Checkout source code"
+          uses: actions/checkout@v2
+
+        
+      # Install Salesforce CLI
+        - name: 'Install Salesforce CLI'
+          run: |
+                    wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                    mkdir ~/sfdx
+                    tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                    echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                    ~/sfdx/bin/sfdx version
+
+    # Authenticate dev hub
+        - name: 'Authenticate Dev Hub'
+          run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E6qm3bcSm3gu7SaB1dGbzuNKyv0qo5xeWrDY2WsLTxo2O9.E8y3SZ1ik5gl3yFxL1LQ4kd. --jwtkeyfile ./server.key --username abcd4145@example1.com --setdefaultdevhubusername --setdefaultusername -a devOrg
+
+
+    # Get Apex test results
+        - name: "Run Apex tests"
+          run: "sfdx force:apex:test:run -c -r json -d ./tests/apex -u devOrg -w 120"
+
+  sonar-scan:
+      needs: deploy-source
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+        # Download the code coverage report
+
+        - name: "Download coverage result from previous job"
+          uses: actions/download-artifact@v2
+          with:
+            name: apex-code-coverage
+            path: tests/apex
+
+        # Use Sonar Cloud action with sonar-project.properties to scan project
+        - name: "Sonar Cloud scan"
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

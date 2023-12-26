@@ -35,6 +35,13 @@ jobs:
           - name: "Run Apex tests"
             run: "sfdx force:apex:test:run -c -r json -d ./tests/apex -u devOrg -w 120"
 
+      # Save code coverage for next job
+          - name: "Make report available"
+            uses: actions/upload-artifact@v2
+            with:
+              name: apex-code-coverage
+              path: tests/apex/test-result-codecoverage.json
+
     sonar-scan:
         needs: deploy-source
         runs-on: ubuntu-latest

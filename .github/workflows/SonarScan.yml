@@ -35,10 +35,10 @@ jobs:
         - name: "Run Apex tests"
           run: "sfdx force:apex:test:run -c -r json -d ./tests/apex -u devOrg -w 120"
 
-  sonar-scan:
+    sonar-scan:
       needs: deploy-source
       runs-on: ubuntu-latest
-      steps:
+    steps:
         - uses: actions/checkout@v2
           with:
             fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis

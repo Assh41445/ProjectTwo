@@ -1,6 +1,6 @@
 name: Sonar Scan
 
-# When the Workflow should run1
+# When the Workflow should run2
 on:
   push:
     branches:

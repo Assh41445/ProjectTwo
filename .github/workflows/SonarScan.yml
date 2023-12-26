@@ -7,7 +7,7 @@ on:
       - main
 
 # Jobs to be executed
-  jobs:
+jobs:
     deploy-source:
       runs-on: ubuntu-latest
 
